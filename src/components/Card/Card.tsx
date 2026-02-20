@@ -1,0 +1,77 @@
+import classNames from 'classnames';
+import React, { useRef } from 'react';
+import classes from './Card.module.scss';
+import Text from 'components/Text';
+import NoImageFoundPic from 'assets/no_img_found.png';
+
+export type CardProps = {
+  /** Дополнительный classname */
+  className?: string;
+  /** URL изображения */
+  image: string;
+  /** Слот над заголовком */
+  captionSlot?: React.ReactNode;
+  /** Заголовок карточки */
+  title: React.ReactNode;
+  /** Описание карточки */
+  subtitle: React.ReactNode;
+  /** Содержимое карточки (футер/боковая часть), может быть пустым */
+  contentSlot?: React.ReactNode;
+  /** Клик на карточку */
+  onClick?: React.MouseEventHandler;
+  /** Слот для действия */
+  actionSlot?: React.ReactNode;
+};
+
+const Card: React.FC<CardProps> = ({
+  className,
+  image,
+  captionSlot,
+  title,
+  subtitle,
+  contentSlot,
+  onClick,
+  actionSlot,
+}) => {
+  const finalClassName = classNames(classes.card, className);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const onImageNotFound = () => {
+    console.log('Image not found');
+    if (imgRef.current != null) imgRef.current.src = NoImageFoundPic;
+  };
+  return (
+    <div className={finalClassName} onClick={onClick}>
+      <img
+        className={classes.cardImage}
+        onError={onImageNotFound}
+        ref={imgRef}
+        src={image}
+        alt=""
+      />
+      <div className={classes.cardInfoAndBuy}>
+        <div className={classes.cardInfo}>
+          {captionSlot && <p className={classes.cardCaption}>{captionSlot}</p>}
+          <Text
+            tag="p"
+            view="p-20"
+            weight="medium"
+            className={classes.cardTitle}
+            maxLines={2}
+            color="primary"
+          >
+            {title}
+          </Text>
+          <Text tag="p" view="p-16" className={classes.cardSubtitle} maxLines={3} color="secondary">
+            {subtitle}
+          </Text>
+        </div>
+        <div className={classes.cardFooter}>
+          <p className={classes.cardContent}>{contentSlot}</p>
+          {actionSlot}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Card;

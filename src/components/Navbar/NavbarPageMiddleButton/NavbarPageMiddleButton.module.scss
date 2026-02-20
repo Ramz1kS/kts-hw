@@ -1,0 +1,14 @@
+@use '../../../styles/variables.scss' as *;
+
+.navbarPageButton {
+    height: 100%;
+    border: none;
+    background: none;
+    color: $text-primary;
+    cursor: pointer;
+}
+
+.navbarPageButtonSelected {
+    border-bottom: 2px solid $button-primary-bg;
+    color: $text-accent;
+}
