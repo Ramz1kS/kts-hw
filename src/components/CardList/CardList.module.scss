@@ -5,4 +5,10 @@
   gap: 60px;
   justify-content: center;
   justify-items: center;
+  list-style-type: none;
+}
+
+.cardLink { 
+    text-decoration: none;
+    color: inherit;
 }

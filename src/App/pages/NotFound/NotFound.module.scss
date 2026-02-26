@@ -1,4 +1,4 @@
-@use '../../../styles/variables.scss' as *;
+@use 'styles/variables.scss' as *;
 
 .notFoundPage {
     min-height: 100vh;
@@ -18,12 +18,10 @@
 }
 
 .errorCode {
+    font-weight: bold;
     font-size: 120px;
     color: $text-accent;
-}
-
-.message {
-    margin-top: $space-m;
+    margin-bottom: $space-m;
 }
 
 .description {

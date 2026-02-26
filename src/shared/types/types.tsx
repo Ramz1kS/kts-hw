@@ -13,6 +13,17 @@ export type Option = {
   /** Значение варианта, отображается пользователю */
   value: string;
 };
+
+export type ErrorInfo = {
+    errorCode: string,
+    errorStatus: number
+}
+
+type ProductImageData = {
+    id: number;
+    url: string;
+}
+
 export type ProductImage = {
     id: number;
     url: string;
@@ -58,5 +69,10 @@ export type ProductData = {
 
 export type ListResponse = {
     data: ProductData[];
+    meta: MetaData
+}
+
+export type ProductPageResponse = {
+    data: ProductData,
     meta: MetaData
 }

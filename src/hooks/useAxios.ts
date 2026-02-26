@@ -1,30 +1,32 @@
 import axios, { isAxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import type { ErrorInfo } from 'shared/types/types';
 
-export const useAxios = <T>(url: string) => {
-  const [data, setData] = useState<T>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorCode, setErrorCode] = useState('');
-  const [errorStatus, setErrorStatus] = useState(0);
+export const useAxios = <T>(url: string, params?: Record<string, any>) => {
+  const [data, setData] = useState<T | null>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorInfo, setErrorInfo] = useState<ErrorInfo>()
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setIsLoading(true);
       try {
-        const response = await axios.get(url);
-        setData(response.data.data);
+        const response = await axios.get(url, { params });
+        setData(response.data);
       } catch (error) {
         if (isAxiosError(error)) {
-          setErrorCode(error.code ?? 'Undefined code');
-          setErrorStatus(error.status ?? 0);
+          setErrorInfo({
+            errorCode: error.code ?? 'Undefined code',
+            errorStatus: error.status ?? 0
+          })
         }
-        setError(true);
+        setIsError(true);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
     fetchData();
-  }, [url]);
+  }, [url, params]);
 
-  return { data, loading, error, errorCode, errorStatus };
+  return { data, isLoading, isError, errorInfo };
 };

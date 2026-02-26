@@ -1,73 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from './ProductPage.module.scss';
 import Text from 'components/Text';
-import Button from 'components/Button';
-import type { ProductData } from 'types';
-import { useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useAxios } from 'hooks/useAxios';
-import ArrowLeft from 'assets/arrow-left.svg';
-import CardList from 'components/CardList';
+import apiPaths from 'config/apiRoutes';
+import ArrowLeftIcon from 'components/icons/ArrowLeftIcon';
+import ProductInfo from './components/ProductInfo';
+import RelatedItems from './components/RelatedItems';
+import type { ListResponse, ProductPageResponse } from 'shared/types/types';
 
 export const ProductPage = () => {
-  const { documentId } = useParams();
-  const navigate = useNavigate();
-  const url = `https://front-school-strapi.ktsdev.ru/api/products/${documentId}?populate[0]=images&populate[1]=productCategory`;
-  const relatedUrl =
-    'https://front-school-strapi.ktsdev.ru/api/products?populate[0]=images&populate[1]=productCategory&pagination[pageSize]=3';
-  const { data: product, loading, error } = useAxios<ProductData>(url);
-  const { data: relatedData, loading: loadingRelated, error: errorRelated } = useAxios<ProductData[]>(relatedUrl);
+    const { documentId } = useParams();
+    const navigate = useNavigate();
+    const { data: product, isLoading, isError } = useAxios<ProductPageResponse>(apiPaths.getProductURL(documentId ?? ''));
+    const relatedParams = React.useMemo(() => ({
+        'pagination[pageSize]': 3,
+    }), []);
+    const { data: relatedData, isLoading: loadingRelated, isError: errorRelated } = 
+    useAxios<ListResponse>(apiPaths.products, relatedParams);
 
-  if (error) {
-    navigate('/404');
-    return null;
-  }
-  return (
-    <div className={classes.productPage}>
-      <button className={classes.backButton} onClick={() => navigate(-1)}>
-        <img src={ArrowLeft} alt="Back" />
-        <Text view="p-20" weight="normal">
-          Назад
-        </Text>
-      </button>
-      {loading ? (
-        <Text view="title" weight="medium">
-          Loading...
-        </Text>
-      ) : (
-        <>
-          <div className={classes.productInfo}>
-            <img className={classes.prodImage} src={product?.images[0].formats.large.url}></img>
-            <div className={classes.prodRightInfo}>
-              <div className={classes.prodNameDesc}>
-                <Text view="title" weight="bold">
-                  {product?.title}
+    useEffect(() => {
+      if (isError) 
+        navigate('/404');
+    }, [isError]);
+
+    return (
+        <div className={classes.productPage}>
+            <Link to={'../'} className={classes.backLink}>
+                <ArrowLeftIcon width={32} height={32} color='primary' />
+                <Text view="p-20" weight="normal">
+                    Назад
                 </Text>
-                <Text color="secondary" view="p-20">
-                  {product?.description}
+            </Link>
+            {isLoading ? (
+                <Text view="title" weight="medium">
+                    Loading...
                 </Text>
-              </div>
-              <div className={classes.costAndButtons}>
-                <Text view="title" weight="bold">
-                  ${product?.price}
-                </Text>
-                <div className={classes.buttons}>
-                  <Button>Buy now</Button>
-                  <Button className={classes.addToCart}>Add to cart</Button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <Text className={classes.relatedText} weight="bold">
-            Related items
-          </Text>
-          {loadingRelated ? <Text>Loading related items...</Text> :
-          errorRelated ? <Text>Error while loading related items!</Text> :
-          relatedData == undefined ? 
-          <Text>Related items list is empty</Text> : <CardList products={relatedData}></CardList>}
-        </>
-      )}
-    </div>
-  );
+            ) : (
+                <>
+                    <ProductInfo
+                        title={product?.data.title ?? 'No title'}
+                        description={product?.data.description ?? 'No description'}
+                        price={product?.data.price ?? 0}
+                        imageUrl={product?.data.images[0].formats.large.url ?? ''}
+                    />
+                    <RelatedItems
+                        products={relatedData?.data}
+                        isLoading={loadingRelated}
+                        isError={errorRelated}
+                    />
+                </>
+            )}
+        </div>
+    );
 };
 
 export default ProductPage;

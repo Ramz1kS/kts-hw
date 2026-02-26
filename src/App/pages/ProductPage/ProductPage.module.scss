@@ -1,17 +1,21 @@
-@use '../../../styles/variables.scss' as *;
+@use 'styles/variables.scss' as *;
 
 .productPage {
     padding-top: 180px;
     padding-right: 100px;
     padding-left: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 50px;
+    @media screen and (max-width: 600px) {
+        padding-right: 25px;
+        padding-left: 25px;
+    }
     background-color: $main-bg;
     display: flex;
     flex-direction: column;
     gap: 40px;
 }
 
-.backButton {
+.backLink {
     display: flex;
     align-items: center;
     gap: $space-xs;
@@ -19,62 +23,11 @@
     border: none;
     cursor: pointer;
     padding: 0;
-}
+    outline: none;
+    color: $text-primary;
+    text-decoration: none;
 
-.backButton:hover {
-    opacity: 0.7;
-}
-
-.productInfo {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.prodImage {
-    width: 600px;
-    object-fit: cover;
-    aspect-ratio: 1;
-    @media screen and (max-width: 600px) {
-        width: 450px;
+    &:hover {
+        opacity: 0.7;
     }
-    @media screen and (max-width: 450px) {
-        width: 300px;
-    }
-}
-
-.prodRightInfo {
-    display: flex;
-    gap: 70px;
-    flex: 1;
-    flex-direction: column;
-}
-
-.prodNameDesc {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.buttons {
-    display: flex;
-    gap: 20px;
-}
-
-.addToCart {
-    background-color: white;
-    border: 1px solid #AFADB5;
-    color: black;
-}
-
-.costAndButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.relatedText {
-    font-size: 32px;
 }

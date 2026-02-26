@@ -1,4 +1,4 @@
-@use '../../styles/variables.scss' as *;
+@use 'styles/variables.scss' as *;
 
 .myBtn {
     padding: $space-s $space-l;
@@ -11,6 +11,7 @@
     background-color: $button-primary-bg;
     border: none;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .myBtn:hover {

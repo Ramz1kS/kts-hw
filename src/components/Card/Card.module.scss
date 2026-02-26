@@ -1,4 +1,4 @@
-@use '../../styles/variables.scss' as *;
+@use 'styles/variables.scss' as *;
 
 .card {
     display: flex;
@@ -74,9 +74,17 @@
     font-size: $space-s;
     color: $text-secondary;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 40ch;
 }
 
 .cardContent {
     font-weight: 700;
     font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 12ch;
 }

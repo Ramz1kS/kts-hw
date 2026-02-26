@@ -1,0 +1,55 @@
+@use 'styles/variables.scss' as *;
+
+.productInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.prodImage {
+    width: 600px;
+    object-fit: cover;
+    aspect-ratio: 1;
+    @media screen and (max-width: 600px) {
+        width: 450px;
+    }
+    @media screen and (max-width: 450px) {
+        width: 300px;
+    }
+}
+
+.prodRightInfo {
+    display: flex;
+    gap: 70px;
+    flex: 1;
+    flex-direction: column;
+}
+
+.prodNameDesc {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.addToCart {
+    background-color: $button-cart-primary-bg;
+    border: 1px solid $button-cart-primary-border;
+    color: $text-primary;
+}
+
+.costAndButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cost { 
+    
+}

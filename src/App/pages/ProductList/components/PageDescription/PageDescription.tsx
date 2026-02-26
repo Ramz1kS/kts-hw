@@ -10,7 +10,7 @@ interface PageDescriptionProps {
 const PageDescription: React.FC<PageDescriptionProps> = ({name, description}) => {
   return (
     <div className={classes.textContainer}>
-      <Text className={classes.bigName} weight='bold'>{name}</Text>
+      <h1 className={classes.bigName}>{name}</h1>
       <Text className={classes.description} color='secondary' view='p-20'>{description}</Text>
     </div>
   )

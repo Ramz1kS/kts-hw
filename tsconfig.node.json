@@ -28,6 +28,7 @@
       "assets": ["assets/*"],
       "types": ["types"],
       "hooks": ["hooks/*"],
+      "shared": ["shared/*"],
       "pages": ["App/pages/*"]
     }
   },
