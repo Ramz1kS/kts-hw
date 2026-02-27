@@ -25,18 +25,13 @@ const PaginatorArrowButton: React.FC<PaginatorArrowButtonProps> = ({
       disabled={type == 'forward' ? currNum == total : currNum == 1}
       className={classes.arrowButton}
       onClick={() => {
-          let bruh = currNum;
-          if (type == 'backward')
-            bruh--
-          else 
-            bruh++;
-          if (bruh == 0) 
-            bruh = 1;
-          else if (bruh > total) 
-            bruh = total;
-          setCurrent(bruh);
-        }
-      }
+        let bruh = currNum;
+        if (type == 'backward') bruh--;
+        else bruh++;
+        if (bruh == 0) bruh = 1;
+        else if (bruh > total) bruh = total;
+        setCurrent(bruh);
+      }}
     >
       <img className={finalClassName} src={ArrowIcon}></img>
     </button>

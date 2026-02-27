@@ -1,7 +1,7 @@
-import './App.css'
-import "react-loading-skeleton/dist/skeleton.css";
-import Navbar from 'components/Navbar'
-import { Outlet } from 'react-router'
+import './App.css';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Navbar from 'components/Navbar';
+import { Outlet } from 'react-router';
 import { SkeletonTheme } from 'react-loading-skeleton';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <Navbar></Navbar>
       <Outlet></Outlet>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

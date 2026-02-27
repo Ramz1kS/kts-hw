@@ -1,36 +1,36 @@
 @use 'styles/variables.scss' as *;
 
 .myBtn {
-    padding: $space-s $space-l;
-    min-height: 52px;
-    display: flex;
-    gap: $space-xxs;
-    justify-content: center;
-    align-items: center;
-    color: $text-button;
-    background-color: $button-primary-bg;
-    border: none;
-    white-space: nowrap;
-    cursor: pointer;
+  padding: $space-s $space-l;
+  min-height: 52px;
+  display: flex;
+  gap: $space-xxs;
+  justify-content: center;
+  align-items: center;
+  color: $text-button;
+  background-color: $button-primary-bg;
+  border: none;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .myBtn:hover {
-    background-color: $button-primary-bg-hover;
+  background-color: $button-primary-bg-hover;
 }
 
 .myBtn:disabled {
-    background-color: $button-primary-bg-disabled;
+  background-color: $button-primary-bg-disabled;
 }
 
 .myBtn:active {
-    background-color: $button-primary-bg-active;
+  background-color: $button-primary-bg-active;
 }
 
 .textButton {
-    font-size: 18px;
-    font-weight: 400;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .load {
-    fill: $text-button;
+  fill: $text-button;
 }

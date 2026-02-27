@@ -6,9 +6,7 @@ import Skeleton from 'react-loading-skeleton';
 
 const CardSkeleton: React.FC = () => {
   return (
-    <motion.div
-      className={classes.card}
-    >
+    <motion.div className={classes.card}>
       <Skeleton className={classes.cardSkeleton}></Skeleton>
       <div className={classes.cardInfoAndBuy}>
         <div className={classes.cardInfo}>

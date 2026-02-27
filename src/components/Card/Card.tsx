@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({
   contentSlot,
   onClick,
   actionSlot,
-  rating
+  rating,
 }) => {
   const finalClassName = classNames(classes.card, className);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -60,9 +60,7 @@ const Card: React.FC<CardProps> = ({
       />
       <div className={classes.cardInfoAndBuy}>
         <div className={classes.cardInfo}>
-          {rating !== undefined ? 
-          <ProductRating rating={rating}></ProductRating>
-         : null}
+          {rating !== undefined ? <ProductRating rating={rating}></ProductRating> : null}
           {<p className={classes.cardCaption}>{captionSlot}</p>}
           <Text
             tag="p"

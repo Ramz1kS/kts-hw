@@ -1,17 +1,17 @@
 @use 'styles/variables.scss' as *;
 
 .arrowButton {
-    background-color: none;
-    background: none;
-    border: none;
-    cursor: pointer;
+  background-color: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .forward {
-    transform: scale(-1);
+  transform: scale(-1);
 }
 
 .disabled {
-    cursor: default;
-    opacity: 50%;
+  cursor: default;
+  opacity: 50%;
 }

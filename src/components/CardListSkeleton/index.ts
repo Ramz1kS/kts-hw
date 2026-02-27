@@ -1,1 +1,1 @@
-export { default } from './CardListSkeleton'
+export { default } from './CardListSkeleton';
