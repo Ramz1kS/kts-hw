@@ -1,44 +1,44 @@
-import React, { useState } from 'react'
+import React from 'react'
 import classes from './Navbar.module.scss'
 import Logo from 'assets/logo.svg'
-import BagLogo from 'assets/bag-2.svg'
 import UserLogo from 'assets/user.svg'
 import NavbarPageMiddleButton from 'components/Navbar/NavbarPageMiddleButton'
-import type { pageName } from 'shared/types/types'
 import NavbarPageRightButton from 'components/Navbar/NavbarPageRightButton'
 import { navItems } from 'config/navConfig'
 import { Link } from 'react-router'
+import NavbarCartLink from 'components/Navbar/NavbarCartLink'
+import { navigationStore } from 'stores/NavigationStore/NavigationStore'
+import { observer } from 'mobx-react-lite'
 
-export default function Navbar() {
-    const [currSelected, setCurrSelected] = useState<pageName>('Products')
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+const Navbar = observer(() => {
     return (
         <nav className={classes.navbar}>
-            <Link to='/' onClick={() => setCurrSelected('Products')}>
+            <Link to='/' onClick={() => navigationStore.setCurrentPage('Products')}>
                 <img src={Logo} className={classes.logo}></img>
             </Link>
-            <button className={classes.burgerButton} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button className={classes.burgerButton} onClick={navigationStore.toggleMenu}>
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <div className={`${classes.navbarButtonsDiv} ${isMenuOpen ? classes.open : ''}`}>
+            <div className={`${classes.navbarButtonsDiv} ${navigationStore.isMenuOpen ? classes.open : ''}`}>
                 {navItems.map((item) => (
                     <NavbarPageMiddleButton
                         key={item.name}
                         name={item.name}
                         path={item.path}
-                        selected={currSelected}
-                        setSelected={setCurrSelected}
-                        onClick={() => setIsMenuOpen(false)}
+                        selected={navigationStore.currentPage}
+                        setSelected={navigationStore.setCurrentPage}
+                        onClick={navigationStore.closeMenu}
                     />
                 ))}
             </div>
             <div className={classes.navbarButtonsRightDiv}>
-                <NavbarPageRightButton image={BagLogo}></NavbarPageRightButton>
+                <NavbarCartLink></NavbarCartLink>
                 <NavbarPageRightButton image={UserLogo}></NavbarPageRightButton>
             </div>
         </nav>
     )
-}
+})
+
+export default Navbar

@@ -2,7 +2,8 @@ import { type RouteObject } from 'react-router';
 import App from '../App/App.tsx';
 import ProductList from '../App/pages/ProductList';
 import ProductPage from '../App/pages/ProductPage';
-import NotFound from '../App/pages/NotFound';
+import Cart from '../App/pages/Cart';
+import ErrorPage from '../App/pages/ErrorPage';
 
 export const routesConfig: RouteObject[] = [
   {
@@ -18,8 +19,16 @@ export const routesConfig: RouteObject[] = [
         element: <ProductPage />,
       },
       {
+        path: '/cart',
+        element: <Cart />,
+      },
+      {
+        path: '/error/:code',
+        element: <ErrorPage />,
+      },
+      {
         path: '*',
-        element: <NotFound />,
+        element: <ErrorPage />,
       },
     ],
   },

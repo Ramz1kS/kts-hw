@@ -4,10 +4,12 @@ import classes from './MultiDropdown.module.scss';
 import classNames from 'classnames';
 import Text from 'components/Text';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
-import { type Option } from 'shared/types/types';
+import { type CategoryData } from 'shared/types/types';
+import { observer } from 'mobx-react-lite';
+import { motion } from 'framer-motion';
 
 type DropdownOptionProps = {
-    optionKey: string;
+    optionKey: number;
     name: string;
     selected: boolean;
     onClick: () => void;
@@ -40,18 +42,18 @@ const DropdownOption: React.FC<DropdownOptionProps> = ({ optionKey, name, select
 export type MultiDropdownProps = {
     className?: string;
     /** Массив возможных вариантов для выбора */
-    options: Option[];
+    options: CategoryData[];
     /** Текущие выбранные значения поля, может быть пустым */
-    value: Option[];
+    value: CategoryData[];
     /** Callback, вызываемый при выборе варианта */
-    onChange: (value: Option[]) => void;
+    onChange: (value: CategoryData[]) => void;
     /** Заблокирован ли дропдаун */
     disabled?: boolean;
     /** Возвращает строку которая будет выводится в инпуте. В случае если опции не выбраны, строка должна отображаться как placeholder. */
-    getTitle: (value: Option[]) => string;
+    getTitle: (value: CategoryData[]) => string;
 };
 
-const MultiDropdown: React.FC<MultiDropdownProps> = ({
+const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
     className,
     options,
     value,
@@ -64,13 +66,13 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     const [isTyping, setIsTyping] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const dropdownClassName = classNames(classes.dropdownContainer, className);
-    const selectedKeys = new Set(value.map((opt) => opt.key));
+    const selectedKeys = new Set(value.map((opt) => opt.id));
 
-    const handleOptionClick = (option: Option) => {
-        const isSelected = selectedKeys.has(option.key);
-        let newValue: Option[];
+    const handleOptionClick = (option: CategoryData) => {
+        const isSelected = selectedKeys.has(option.id);
+        let newValue: CategoryData[];
         if (isSelected) {
-            newValue = value.filter((item) => item.key !== option.key);
+            newValue = value.filter((item) => item.id !== option.id);
         } else {
             newValue = [...value, option];
         }
@@ -104,7 +106,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     };
 
     const filteredOptions = options.filter((option) =>
-        option.value.toLowerCase().includes(filter.toLowerCase())
+        option.title.toLowerCase().includes(filter.toLowerCase())
     );
     let displayValue;
     if (isTyping) {
@@ -128,20 +130,24 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
             <ArrowDownIcon color="secondary" className={classes.arrowDownIcon} />
 
             {isOpen && !disabled && (
-                <div className={classes.dropdownOptionsContainer}>
-                    {filteredOptions.map((option) => (
+                <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={classes.dropdownOptionsContainer}>
+                    {filteredOptions.map((option, index) => (
                         <DropdownOption
-                            key={option.key}
-                            optionKey={option.key}
-                            name={option.value}
-                            selected={selectedKeys.has(option.key)}
+                            key={index}
+                            optionKey={option.id}
+                            name={option.title}
+                            selected={selectedKeys.has(option.id)}
                             onClick={() => handleOptionClick(option)}
                         />
                     ))}
-                </div>
+                </motion.div>
             )}
         </div>
     );
-};
+});
 
 export default MultiDropdown;

@@ -7,22 +7,16 @@ export type Product = {
   price: number;
   image: string;
 }
-export type Option = {
-  /** Ключ варианта, используется для отправки на бек/использования в коде */
-  key: string;
-  /** Значение варианта, отображается пользователю */
-  value: string;
-};
 
 export type ErrorInfo = {
     errorCode: string,
     errorStatus: number
 }
 
-type ProductImageData = {
-    id: number;
-    url: string;
-}
+// type ProductImageData = {
+//     id: number;
+//     url: string;
+// }
 
 export type ProductImage = {
     id: number;
@@ -67,6 +61,12 @@ export type ProductData = {
     images: ProductImage[];
 }
 
+export type CategoryData = {
+    id: number;
+    documentId: string;
+    title: string;
+}
+
 export type ListResponse = {
     data: ProductData[];
     meta: MetaData
@@ -74,5 +74,10 @@ export type ListResponse = {
 
 export type ProductPageResponse = {
     data: ProductData,
+    meta: MetaData
+}
+
+export type CategoryResponse = {
+    data: CategoryData[],
     meta: MetaData
 }

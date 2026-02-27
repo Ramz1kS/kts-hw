@@ -34,6 +34,7 @@
       "types": ["types"],
       "hooks": ["hooks/*"],
       "shared": ["shared/*"],
+      "stores": ["stores/*"],
       "pages": ["App/pages/*"]
     }
 },

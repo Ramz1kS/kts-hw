@@ -7,7 +7,7 @@ import PaginatorArrowButton from './PaginatorArrowButton'
 interface PaginatorProps {
     current: number
     total: number
-    setCurrent: (val: number | ((val: number) => number)) => void
+    setCurrent: (val: number) => void
 }
 
 const Paginator: React.FC<PaginatorProps> = ({

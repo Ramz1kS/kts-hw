@@ -2,27 +2,32 @@ import React, { useEffect } from 'react';
 import classes from './ProductPage.module.scss';
 import Text from 'components/Text';
 import { Link, useNavigate, useParams } from 'react-router';
-import { useAxios } from 'hooks/useAxios';
-import apiPaths from 'config/apiRoutes';
 import ArrowLeftIcon from 'components/icons/ArrowLeftIcon';
 import ProductInfo from './components/ProductInfo';
 import RelatedItems from './components/RelatedItems';
-import type { ListResponse, ProductPageResponse } from 'shared/types/types';
+import { productStore } from 'stores/ProductStore/ProductStore';
+import { observer } from 'mobx-react-lite';
 
-export const ProductPage = () => {
+export const ProductPage = observer(() => {
     const { documentId } = useParams();
     const navigate = useNavigate();
-    const { data: product, isLoading, isError } = useAxios<ProductPageResponse>(apiPaths.getProductURL(documentId ?? ''));
-    const relatedParams = React.useMemo(() => ({
-        'pagination[pageSize]': 3,
-    }), []);
-    const { data: relatedData, isLoading: loadingRelated, isError: errorRelated } = 
-    useAxios<ListResponse>(apiPaths.products, relatedParams);
 
     useEffect(() => {
-      if (isError) 
-        navigate('/404');
-    }, [isError]);
+        if (documentId) {
+            productStore.loadProduct(documentId);
+            productStore.loadRelatedProducts();
+        }
+    }, [documentId]);
+
+    useEffect(() => {
+        if (productStore.isError) {
+            navigate(`/error/${productStore.errorCode}`);
+        }
+    }, [productStore.isError, productStore.errorCode]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [documentId])
 
     return (
         <div className={classes.productPage}>
@@ -32,27 +37,24 @@ export const ProductPage = () => {
                     Назад
                 </Text>
             </Link>
-            {isLoading ? (
+            <ProductInfo
+                title={productStore.product?.title}
+                description={productStore.product?.description}
+                price={productStore.product?.price}
+                imageUrl={productStore.product?.images[0]?.formats.large.url}
+                rating={productStore.product?.rating}
+            />
+            {productStore.isLoadingRelated ? (
                 <Text view="title" weight="medium">
                     Loading...
                 </Text>
             ) : (
                 <>
-                    <ProductInfo
-                        title={product?.data.title ?? 'No title'}
-                        description={product?.data.description ?? 'No description'}
-                        price={product?.data.price ?? 0}
-                        imageUrl={product?.data.images[0].formats.large.url ?? ''}
-                    />
-                    <RelatedItems
-                        products={relatedData?.data}
-                        isLoading={loadingRelated}
-                        isError={errorRelated}
-                    />
+                    <RelatedItems />
                 </>
             )}
         </div>
     );
-};
+});
 
 export default ProductPage;

@@ -1,0 +1,15 @@
+@use 'styles/variables.scss' as *;
+
+.circleContainer {
+    display: flex;
+}
+
+.circleFilled {
+    background-color: $rating-active;
+    border-radius: 50%;
+}
+
+.circleEmpty {
+    background-color: $rating-inactive;
+    border-radius: 50%;
+}
