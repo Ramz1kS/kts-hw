@@ -25,13 +25,7 @@ export const ProductList = observer(() => {
         We display products based on the latest products we have, if you want
         to see our old products please enter the name of the item"
       />
-      <SearchFilter
-        inputVal={productListStore.searchQuery}
-        setInputVal={productListStore.setSearchQuery}
-        selectedCategories={productListStore.selectedCategories}
-        setSelectedCategories={productListStore.setCategories}
-        categoryOptions={productListStore.availableCategories}
-      />
+      <SearchFilter />
       <ProductsStatus
         isLoading={productListStore.isLoading}
         isError={productListStore.isError}
@@ -44,10 +38,12 @@ export const ProductList = observer(() => {
         <CardList
           buttonText="Add to cart"
           products={productListStore.products?.data ?? []}
-          onButtonClick={cartStore.addProduct}
+          onButtonClick={(product) => cartStore.addProductId(product.id)}
         />
       )}
-      {!productListStore.isLoading && !productListStore.isError ? (
+      {!productListStore.isLoading &&
+      !productListStore.isError &&
+      productListStore.totalPages != 0 ? (
         <div className={classes.pagination}>
           <Paginator
             current={productListStore.currentPage}

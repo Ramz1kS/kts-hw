@@ -30,29 +30,24 @@ export const ProductPage = observer(() => {
   }, [documentId]);
 
   return (
-    <div className={classes.productPage}>
-      <Link to={'../'} className={classes.backLink}>
+    <div className={classes['product-page']}>
+      <Link to={'../'} className={classes['product-page__back-link']}>
         <ArrowLeftIcon width={32} height={32} color="primary" />
         <Text view="p-20" weight="normal">
-          Назад
+          Back
         </Text>
       </Link>
       <ProductInfo
         title={productStore.product?.title}
         description={productStore.product?.description}
         price={productStore.product?.price}
+        discountPercent={productStore.product?.discountPercent ?? 0}
         imageUrl={productStore.product?.images[0]?.formats.large.url}
         rating={productStore.product?.rating}
+        isInStock={productStore.product?.isInStock}
+        id={productStore.product?.id ?? 0}
       />
-      {productStore.isLoadingRelated ? (
-        <Text view="title" weight="medium">
-          Loading...
-        </Text>
-      ) : (
-        <>
-          <RelatedItems />
-        </>
-      )}
+      <RelatedItems />
     </div>
   );
 });

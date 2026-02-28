@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from './Cart.module.scss';
 import Text from 'components/Text';
 import CardList from 'components/CardList';
@@ -8,6 +8,10 @@ import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
 
 export const Cart = observer(() => {
+  useEffect(() => {
+    cartStore.loadProducts();
+  }, []);
+
   return (
     <motion.div
       className={classes.cartPage}
@@ -29,7 +33,7 @@ export const Cart = observer(() => {
           <CardList
             products={cartStore.products}
             buttonText="Remove"
-            onButtonClick={cartStore.removeProduct}
+            onButtonClick={(product) => cartStore.removeProductId(product.id)}
           />
           <motion.div
             className={classes.total}
@@ -38,7 +42,7 @@ export const Cart = observer(() => {
             transition={{ delay: 0.2 }}
           >
             <Text view="title" weight="bold">
-              Total: ${cartStore.price.toFixed(2)}
+              Total: ${cartStore.price}
             </Text>
             <Button>Checkout</Button>
           </motion.div>

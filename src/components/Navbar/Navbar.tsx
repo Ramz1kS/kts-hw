@@ -14,15 +14,15 @@ const Navbar = observer(() => {
   return (
     <nav className={classes.navbar}>
       <Link to="/" onClick={() => navigationStore.setCurrentPage('Products')}>
-        <img src={Logo} className={classes.logo}></img>
+        <img src={Logo} className={classes.navbar__logo}></img>
       </Link>
-      <button className={classes.burgerButton} onClick={navigationStore.toggleMenu}>
+      <button className={classes.navbar__burger} onClick={navigationStore.toggleMenu}>
         <span></span>
         <span></span>
         <span></span>
       </button>
       <div
-        className={`${classes.navbarButtonsDiv} ${navigationStore.isMenuOpen ? classes.open : ''}`}
+        className={`${classes.navbar__buttons} ${navigationStore.isMenuOpen ? classes.navbar__buttons_open : ''}`}
       >
         {navItems.map((item) => (
           <NavbarPageMiddleButton
@@ -35,7 +35,7 @@ const Navbar = observer(() => {
           />
         ))}
       </div>
-      <div className={classes.navbarButtonsRightDiv}>
+      <div className={classes['navbar__buttons-right']}>
         <NavbarCartLink></NavbarCartLink>
         <NavbarPageRightButton image={UserLogo}></NavbarPageRightButton>
       </div>

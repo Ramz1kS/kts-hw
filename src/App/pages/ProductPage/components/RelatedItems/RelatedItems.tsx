@@ -10,7 +10,7 @@ import CardListSkeleton from 'components/CardListSkeleton';
 const RelatedItems: React.FC = observer(() => {
   return (
     <>
-      <Text tag="h2" className={classes.relatedText} weight="bold">
+      <Text tag="h2" className={classes['related-items__title']} weight="bold">
         Related items
       </Text>
       {productStore.isLoadingRelated ? (
@@ -22,7 +22,7 @@ const RelatedItems: React.FC = observer(() => {
       ) : (
         <CardList
           buttonText="Add to cart"
-          onButtonClick={cartStore.addProduct}
+          onButtonClick={(product) => cartStore.addProductId(product.id)}
           products={productStore.relatedProducts}
         />
       )}

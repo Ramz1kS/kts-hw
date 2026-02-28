@@ -24,6 +24,7 @@ const Paginator: React.FC<PaginatorProps> = ({ current, total, setCurrent }) => 
           ></PaginatorArrowButton>
           {Array.from({ length: total }).map((_, i) => (
             <PaginatorNumButton
+              key={i + 1}
               num={i + 1}
               currNum={current}
               setCurrent={setCurrent}
@@ -47,6 +48,7 @@ const Paginator: React.FC<PaginatorProps> = ({ current, total, setCurrent }) => 
           ></PaginatorArrowButton>
           {[1, 2, 3].map((i) => (
             <PaginatorNumButton
+              key={i}
               num={i}
               currNum={current}
               setCurrent={setCurrent}
@@ -82,6 +84,7 @@ const Paginator: React.FC<PaginatorProps> = ({ current, total, setCurrent }) => 
           <Text>. . .</Text>
           {[total - 3, total - 2, total - 1, total].map((i) => (
             <PaginatorNumButton
+              key={i}
               num={i}
               currNum={current}
               setCurrent={setCurrent}
@@ -111,6 +114,7 @@ const Paginator: React.FC<PaginatorProps> = ({ current, total, setCurrent }) => 
           <Text>. . .</Text>
           {[current - 1, current, current + 1].map((i) => (
             <PaginatorNumButton
+              key={i}
               num={i}
               currNum={current}
               setCurrent={setCurrent}

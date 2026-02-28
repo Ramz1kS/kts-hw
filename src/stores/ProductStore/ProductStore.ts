@@ -35,7 +35,6 @@ class ProductStore {
         this.product = response.data.data;
         this.isLoading = false;
       });
-      console.log(this.product);
     } catch (error) {
       runInAction(() => {
         this.isError = true;

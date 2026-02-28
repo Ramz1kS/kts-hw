@@ -1,50 +1,89 @@
-import { action, computed, makeObservable, observable } from 'mobx';
-import type { ProductData } from 'shared/types/types';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import axios from 'axios';
+import type { ProductData, ListResponse } from 'shared/types/types';
+import apiRoutes from 'config/apiRoutes';
+
+const E_COMMERSE_STORAGE_NAME = 'ecommerse_cart';
 
 class CartStore {
+  productIds: number[] = [];
   products: ProductData[] = [];
+  isLoading = false;
 
   constructor() {
     makeObservable(this, {
+      productIds: observable,
       products: observable,
-      addProduct: action.bound,
-      removeProduct: action.bound,
-      removeProductById: action.bound,
+      isLoading: observable,
+      addProductId: action.bound,
+      removeProductId: action.bound,
       clear: action.bound,
+      loadProducts: action.bound,
       count: computed,
       price: computed,
     });
-  }
-
-  addProduct(prod: ProductData) {
-    for (let i = 0; i < this.products.length; i++) {
-      if (this.products[i].id === prod.id) {
-        return;
+    const savedCart = localStorage.getItem(E_COMMERSE_STORAGE_NAME);
+    if (savedCart) {
+      try {
+        const parsed = JSON.parse(savedCart);
+        this.productIds = parsed;
+      } catch {
+        this.productIds = [];
       }
     }
-    this.products.push(prod);
   }
 
-  removeProduct(prod: ProductData) {
-    this.removeProductById(prod.id);
+  addProductId(id: number) {
+    if (!this.productIds.includes(id)) {
+      this.productIds.push(id);
+      localStorage.setItem(E_COMMERSE_STORAGE_NAME, JSON.stringify(this.productIds));
+    }
   }
 
-  removeProductById(id: number) {
+  removeProductId(id: number) {
+    this.productIds = this.productIds.filter((productId) => productId !== id);
     this.products = this.products.filter((p) => p.id !== id);
+    localStorage.setItem(E_COMMERSE_STORAGE_NAME, JSON.stringify(this.productIds));
   }
 
   clear() {
+    this.productIds = [];
     this.products = [];
+    localStorage.setItem(E_COMMERSE_STORAGE_NAME, JSON.stringify(this.productIds));
+  }
+
+  async loadProducts() {
+    if (this.productIds.length === 0) {
+      this.products = [];
+      return;
+    }
+
+    this.isLoading = true;
+    try {
+      const response = await axios.get<ListResponse>(apiRoutes.products, {
+        params: {
+          'filters[id][$in]': this.productIds,
+          'pagination[pageSize]': this.productIds.length,
+        },
+      });
+      runInAction(() => {
+        this.products = response.data.data;
+        this.isLoading = false;
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.isLoading = false;
+        throw error;
+      });
+    }
   }
 
   get count() {
-    return this.products.length;
+    return this.productIds.length;
   }
 
   get price() {
-    let total = 0;
-    this.products.forEach((p) => (total += p.price));
-    return total;
+    return this.products.reduce((total, product) => total + product.price, 0);
   }
 }
 

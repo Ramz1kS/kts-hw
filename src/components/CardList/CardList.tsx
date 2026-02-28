@@ -24,7 +24,7 @@ const CardList: React.FC<CardListInterface> = observer(
             No products found.
           </Text>
         ) : (
-          <ul className={classes.productsListFlex}>
+          <ul className={classes['card-list']}>
             {products.map((product, index) => (
               <motion.li
                 key={product.id}
@@ -32,8 +32,12 @@ const CardList: React.FC<CardListInterface> = observer(
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link to={`/product/${product.documentId}`} className={classes.cardLink}>
-                  <article>
+                <Link to={`/product/${product.documentId}`} className={classes['card-list__link']}>
+                  <article
+                    style={{
+                      opacity: product.isInStock ? 1 : 0.5,
+                    }}
+                  >
                     <Card
                       image={
                         product.images.length != 0 ? product.images[0].formats.small.url : undefined
@@ -42,19 +46,48 @@ const CardList: React.FC<CardListInterface> = observer(
                       title={product.title}
                       subtitle={product.description || <Skeleton count={3}></Skeleton>}
                       contentSlot={
-                        product.price ? `$${product.price}` : <Skeleton width={40}></Skeleton>
+                        <div className={classes['card-list__price']}>
+                          <Text
+                            view="p-22"
+                            weight="bold"
+                            color={product.discountPercent !== undefined ? 'accent' : 'primary'}
+                            className={classes['card-list__price_current']}
+                          >
+                            {product.price !== undefined ? (
+                              `$${product.price}`
+                            ) : (
+                              <Skeleton width={40}></Skeleton>
+                            )}
+                          </Text>
+                          <Text
+                            view="p-14"
+                            weight="bold"
+                            color="secondary"
+                            className={classes['card-list__price_old']}
+                          >
+                            {product.discountPercent != 0
+                              ? `$${Math.round((product.price / (100 - product.discountPercent)) * 100)}`
+                              : null}
+                          </Text>
+                        </div>
                       }
                       rating={product.rating}
                       actionSlot={
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            if (onButtonClick != undefined) onButtonClick(product);
-                          }}
-                        >
-                          {buttonText}
-                        </Button>
+                        product.isInStock ? (
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              if (onButtonClick != undefined) onButtonClick(product);
+                            }}
+                          >
+                            {buttonText}
+                          </Button>
+                        ) : (
+                          <Text view="p-18" weight="medium" color="secondary">
+                            Not in stock!
+                          </Text>
+                        )
                       }
                     />
                   </article>

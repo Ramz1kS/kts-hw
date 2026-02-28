@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Icon, { type IconProps } from '../Icon';
-import classes from './ArrowLeftIcon.module.scss';
+import Icon, { type IconProps } from 'components/icons/Icon';
+import classes from './CheckIcon.module.scss';
 
 const CheckIcon: React.FC<IconProps> = ({
   width = 24,

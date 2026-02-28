@@ -10,7 +10,7 @@ interface ProductRatingProps {
 const ProductRating: React.FC<ProductRatingProps> = ({ rating, size = 12, gap = 4 }) => {
   return (
     <div
-      className={classes.circleContainer}
+      className={classes['product-rating']}
       style={{
         gap: gap,
       }}
@@ -20,7 +20,7 @@ const ProductRating: React.FC<ProductRatingProps> = ({ rating, size = 12, gap = 
         .map((_, i) => (
           <div
             key={i}
-            className={classes.circleFilled}
+            className={`${classes['product-rating__circle']} ${classes['product-rating__circle_filled']}`}
             style={{
               width: size,
               height: size,
@@ -32,7 +32,7 @@ const ProductRating: React.FC<ProductRatingProps> = ({ rating, size = 12, gap = 
         .map((_, i) => (
           <div
             key={i}
-            className={classes.circleEmpty}
+            className={`${classes['product-rating__circle']} ${classes['product-rating__circle_empty']}`}
             style={{
               width: size,
               height: size,

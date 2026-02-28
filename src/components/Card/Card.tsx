@@ -25,6 +25,8 @@ export type CardProps = {
   actionSlot?: React.ReactNode;
   /** Оценка товара **/
   rating?: number;
+  /** Скидка **/
+  discountPercent?: number;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -52,32 +54,38 @@ const Card: React.FC<CardProps> = ({
       transition={{ duration: 0.2 }}
     >
       <img
-        className={classes.cardImage}
+        className={classes.card__image}
         onError={onImageNotFound}
         ref={imgRef}
         src={image == undefined ? NoImageFoundPic : image}
         alt=""
       />
-      <div className={classes.cardInfoAndBuy}>
-        <div className={classes.cardInfo}>
+      <div className={classes['card__info-wrapper']}>
+        <div className={classes.card__info}>
           {rating !== undefined ? <ProductRating rating={rating}></ProductRating> : null}
-          {<p className={classes.cardCaption}>{captionSlot}</p>}
+          {<p className={classes.card__caption}>{captionSlot}</p>}
           <Text
             tag="p"
             view="p-20"
             weight="medium"
-            className={classes.cardTitle}
+            className={classes.card__title}
             maxLines={2}
             color="primary"
           >
             {title}
           </Text>
-          <Text tag="p" view="p-16" className={classes.cardSubtitle} maxLines={3} color="secondary">
+          <Text
+            tag="p"
+            view="p-16"
+            className={classes.card__subtitle}
+            maxLines={3}
+            color="secondary"
+          >
             {subtitle}
           </Text>
         </div>
-        <div className={classes.cardFooter}>
-          <p className={classes.cardContent}>{contentSlot}</p>
+        <div className={classes.card__footer}>
+          <div className={classes.card__content}>{contentSlot}</div>
           {actionSlot}
         </div>
       </div>
