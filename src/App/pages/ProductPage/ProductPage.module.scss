@@ -1,21 +1,22 @@
 @use 'styles/variables.scss' as *;
 
-.productPage {
-    padding-top: 180px;
-    padding-right: 100px;
-    padding-left: 100px;
-    padding-bottom: 50px;
-    @media screen and (max-width: 600px) {
-        padding-right: 25px;
-        padding-left: 25px;
-    }
-    background-color: $main-bg;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
+.product-page {
+  padding-top: 130px;
+  padding-right: 100px;
+  padding-left: 100px;
+  padding-bottom: 50px;
 
-.backLink {
+  @media screen and (max-width: 600px) {
+    padding-right: 25px;
+    padding-left: 25px;
+  }
+
+  background-color: $main-bg;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  &__back-link {
     display: flex;
     align-items: center;
     gap: $space-xs;
@@ -28,6 +29,7 @@
     text-decoration: none;
 
     &:hover {
-        opacity: 0.7;
+      opacity: 0.7;
     }
+  }
 }

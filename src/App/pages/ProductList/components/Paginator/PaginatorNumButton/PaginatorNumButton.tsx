@@ -6,7 +6,7 @@ import classNames from 'classnames';
 interface PaginatorNumButtonProps {
   num: number;
   currNum: number;
-  setCurrent: (val: number | ((val: number) => number)) => void;
+  setCurrent: (val: number) => void;
 }
 
 const PaginatorNumButton: React.FC<PaginatorNumButtonProps> = ({ currNum, num, setCurrent }) => {

@@ -1,32 +1,33 @@
 import React from 'react';
 import Text from 'components/Text';
 import CardList from 'components/CardList';
-import type { ProductData } from 'shared/types/types';
 import classes from './RelatedItems.module.scss';
+import { cartStore } from 'stores/CartStore/CartStore';
+import { productStore } from 'stores/ProductStore/ProductStore';
+import { observer } from 'mobx-react-lite';
+import CardListSkeleton from 'components/CardListSkeleton';
 
-type RelatedItemsProps = {
-    products?: ProductData[];
-    isLoading: boolean;
-    isError: boolean;
-};
-
-const RelatedItems: React.FC<RelatedItemsProps> = ({ products, isLoading, isError }) => {
-    return (
-        <>
-            <Text tag="h2" className={classes.relatedText} weight="bold">
-                Related items
-            </Text>
-            {isLoading ? (
-                <Text>Loading related items...</Text>
-            ) : isError ? (
-                <Text>Error while loading related items!</Text>
-            ) : !products ? (
-                <Text>Related items list is empty</Text>
-            ) : (
-                <CardList products={products} />
-            )}
-        </>
-    );
-};
+const RelatedItems: React.FC = observer(() => {
+  return (
+    <>
+      <Text tag="h2" className={classes['related-items__title']} weight="bold">
+        Related items
+      </Text>
+      {productStore.isLoadingRelated ? (
+        <CardListSkeleton count={3}></CardListSkeleton>
+      ) : productStore.isErrorRelated ? (
+        <Text>Error while loading related items!</Text>
+      ) : productStore.relatedProducts.length == 0 ? (
+        <Text>Related items list is empty</Text>
+      ) : (
+        <CardList
+          buttonText="Add to cart"
+          onButtonClick={(product) => cartStore.addProductId(product.id)}
+          products={productStore.relatedProducts}
+        />
+      )}
+    </>
+  );
+});
 
 export default RelatedItems;

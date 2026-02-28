@@ -5,7 +5,7 @@ import ArrowIcon from 'assets/arrow-left.svg';
 
 interface PaginatorArrowButtonProps {
   currNum: number;
-  setCurrent: (val: number | ((val: number) => number)) => void;
+  setCurrent: (val: number) => void;
   total: number;
   type: 'forward' | 'backward';
 }
@@ -22,21 +22,16 @@ const PaginatorArrowButton: React.FC<PaginatorArrowButtonProps> = ({
   });
   return (
     <button
+      disabled={type == 'forward' ? currNum == total : currNum == 1}
       className={classes.arrowButton}
-      onClick={() =>
-        setCurrent((prev) => {
-          let bruh = prev;
-          if (type == 'backward')
-            bruh--
-          else 
-            bruh++;
-          if (bruh == 0) 
-            bruh = 1;
-          else if (bruh > total) 
-            bruh = total;
-          return bruh;
-        })
-      }
+      onClick={() => {
+        let bruh = currNum;
+        if (type == 'backward') bruh--;
+        else bruh++;
+        if (bruh == 0) bruh = 1;
+        else if (bruh > total) bruh = total;
+        setCurrent(bruh);
+      }}
     >
       <img className={finalClassName} src={ArrowIcon}></img>
     </button>

@@ -3,24 +3,30 @@ import React, { useRef } from 'react';
 import classes from './Card.module.scss';
 import Text from 'components/Text';
 import NoImageFoundPic from 'assets/no_img_found.png';
+import { motion } from 'framer-motion';
+import ProductRating from 'components/ProductRating';
 
 export type CardProps = {
   /** Дополнительный classname */
   className?: string;
   /** URL изображения */
-  image: string;
+  image?: string;
   /** Слот над заголовком */
   captionSlot?: React.ReactNode;
   /** Заголовок карточки */
-  title: React.ReactNode;
+  title?: React.ReactNode;
   /** Описание карточки */
-  subtitle: React.ReactNode;
+  subtitle?: React.ReactNode;
   /** Содержимое карточки (футер/боковая часть), может быть пустым */
   contentSlot?: React.ReactNode;
   /** Клик на карточку */
   onClick?: React.MouseEventHandler;
   /** Слот для действия */
   actionSlot?: React.ReactNode;
+  /** Оценка товара **/
+  rating?: number;
+  /** Скидка **/
+  discountPercent?: number;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -32,6 +38,7 @@ const Card: React.FC<CardProps> = ({
   contentSlot,
   onClick,
   actionSlot,
+  rating,
 }) => {
   const finalClassName = classNames(classes.card, className);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -40,37 +47,49 @@ const Card: React.FC<CardProps> = ({
     if (imgRef.current != null) imgRef.current.src = NoImageFoundPic;
   };
   return (
-    <div className={finalClassName} onClick={onClick}>
+    <motion.div
+      className={finalClassName}
+      onClick={onClick}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
       <img
-        className={classes.cardImage}
+        className={classes.card__image}
         onError={onImageNotFound}
         ref={imgRef}
-        src={image}
+        src={image == undefined ? NoImageFoundPic : image}
         alt=""
       />
-      <div className={classes.cardInfoAndBuy}>
-        <div className={classes.cardInfo}>
-          {captionSlot && <p className={classes.cardCaption}>{captionSlot}</p>}
+      <div className={classes['card__info-wrapper']}>
+        <div className={classes.card__info}>
+          {rating !== undefined ? <ProductRating rating={rating}></ProductRating> : null}
+          {<p className={classes.card__caption}>{captionSlot}</p>}
           <Text
             tag="p"
             view="p-20"
             weight="medium"
-            className={classes.cardTitle}
+            className={classes.card__title}
             maxLines={2}
             color="primary"
           >
             {title}
           </Text>
-          <Text tag="p" view="p-16" className={classes.cardSubtitle} maxLines={3} color="secondary">
+          <Text
+            tag="p"
+            view="p-16"
+            className={classes.card__subtitle}
+            maxLines={3}
+            color="secondary"
+          >
             {subtitle}
           </Text>
         </div>
-        <div className={classes.cardFooter}>
-          <p className={classes.cardContent}>{contentSlot}</p>
+        <div className={classes.card__footer}>
+          <div className={classes.card__content}>{contentSlot}</div>
           {actionSlot}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

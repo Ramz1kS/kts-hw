@@ -1,14 +1,42 @@
-.productsListFlex {
+.card-list {
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 60px;
   justify-content: center;
-  justify-items: center;
+  align-items: center;
   list-style-type: none;
+
+  & > li {
+    display: flex;
+  }
 }
 
-.cardLink { 
-    text-decoration: none;
-    color: inherit;
+.card-list__link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex: 1;
+
+  & > article {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.card-list__price {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.card-list__price_current {
+  word-break: break-all;
+}
+
+.card-list__price_old {
+  word-break: break-all;
+  text-decoration: line-through;
 }

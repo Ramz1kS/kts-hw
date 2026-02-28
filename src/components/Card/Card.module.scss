@@ -1,26 +1,30 @@
 @use 'styles/variables.scss' as *;
 
 .card {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    align-items: flex-start;
-    padding: 0px 0px $space-xl;
-    gap: $space-xl;
-    width: 350px;
-    background: $card-image-bg;
-    border-radius: 0px;
-}
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: flex-start;
+  padding: 0px 0px $space-xl;
+  gap: $space-xl;
+  width: 350px;
+  height: 100%;
+  background: $card-image-bg;
+  border-radius: 0px;
 
-.cardImage {
+  &:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  &__image {
     width: 100%;
     height: auto;
     aspect-ratio: 1;
     object-fit: cover;
-    background-color: #D9D9D9;
-}
+    background-color: #d9d9d9;
+  }
 
-.cardInfoAndBuy {
+  &__info-wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -30,9 +34,9 @@
     flex: none;
     order: 1;
     flex-grow: 0;
-}
+  }
 
-.cardInfo {
+  &__info {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,9 +47,9 @@
     order: 0;
     align-self: stretch;
     flex-grow: 0;
-}
+  }
 
-.cardFooter {
+  &__footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -56,21 +60,17 @@
     order: 1;
     align-self: stretch;
     flex-grow: 0;
-}
+  }
 
-.card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-.cardTitle {
+  &__title {
     font-weight: 500;
-}
+  }
 
-.cardSubtitle {
+  &__subtitle {
     font-weight: 400;
-}
+  }
 
-.cardCaption {
+  &__caption {
     font-size: $space-s;
     color: $text-secondary;
     font-weight: 500;
@@ -78,13 +78,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 40ch;
-}
+  }
 
-.cardContent {
+  &__content {
     font-weight: 700;
     font-size: 18px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 12ch;
+  }
 }

@@ -1,59 +1,59 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import classes from './ProductList.module.scss';
 import PageDescription from './components/PageDescription';
 import SearchFilter from './components/SearchFilter';
 import ProductsStatus from './components/ProductsStatus';
-import {
-    type Option,
-    type ProductData,
-    type ListResponse,
-} from 'shared/types/types';
 import CardList from 'components/CardList';
 import Paginator from './components/Paginator';
-import apiRoutes from 'config/apiRoutes';
-import { useAxios } from 'hooks/useAxios';
-import { categoryOptions } from 'config/filterConfig';
+import { cartStore } from 'stores/CartStore/CartStore';
+import { productListStore } from 'stores/ProductListStore/ProductListStore';
+import { observer } from 'mobx-react-lite';
+import CardListSkeleton from 'components/CardListSkeleton';
 
-const PAGE_SIZE = 9
-
-export const ProductList = () => {
-    const [inputVal, setInputVal] = useState('');
-    const [selectedCategories, setSelectedCategories] = useState<Option[]>([]);
-    const [currentPage, setCurrPage] = useState(1);
-
-    const params = useMemo(() => ({
-        'pagination[pageSize]': PAGE_SIZE,
-        'pagination[page]': currentPage,
-    }), [currentPage]);
-
-    const { data, isLoading, isError, errorInfo } = useAxios<ListResponse>(apiRoutes.products, params);
-    return (
-        <div className={classes.prodListPage}>
-            <PageDescription
-                name="Products"
-                description="
+export const ProductList = observer(() => {
+  useEffect(() => {
+    productListStore.loadProducts();
+  }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [productListStore.currentPage]);
+  return (
+    <div className={classes.prodListPage}>
+      <PageDescription
+        name="Products"
+        description="
         We display products based on the latest products we have, if you want
         to see our old products please enter the name of the item"
-            />
-            <SearchFilter
-                inputVal={inputVal}
-                setInputVal={setInputVal}
-                selectedCategories={selectedCategories}
-                setSelectedCategories={setSelectedCategories}
-                categoryOptions={categoryOptions}
-            />
-            <ProductsStatus
-                isLoading={isLoading}
-                isError={isError}
-                errorCode={errorInfo?.errorCode ?? ''}
-                total={data?.meta.pagination.total}
-            />
-            {!isLoading && <CardList products={data?.data ?? []} />}
-            <div className={classes.pagination}>
-                <Paginator current={currentPage} setCurrent={setCurrPage} total={data?.meta.pagination.pageCount ?? 1} />
-            </div>
+      />
+      <SearchFilter />
+      <ProductsStatus
+        isLoading={productListStore.isLoading}
+        isError={productListStore.isError}
+        errorCode={productListStore.errorCode}
+        total={productListStore.totalProducts}
+      />
+      {productListStore.isLoading ? (
+        <CardListSkeleton count={6}></CardListSkeleton>
+      ) : (
+        <CardList
+          buttonText="Add to cart"
+          products={productListStore.products?.data ?? []}
+          onButtonClick={(product) => cartStore.addProductId(product.id)}
+        />
+      )}
+      {!productListStore.isLoading &&
+      !productListStore.isError &&
+      productListStore.totalPages != 0 ? (
+        <div className={classes.pagination}>
+          <Paginator
+            current={productListStore.currentPage}
+            setCurrent={productListStore.setPage}
+            total={productListStore.totalPages}
+          />
         </div>
-    );
-};
+      ) : null}
+    </div>
+  );
+});
 
 export default ProductList;
